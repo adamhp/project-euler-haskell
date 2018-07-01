@@ -22,6 +22,8 @@ time a = do
 
 prime :: Int -> Bool
 prime n 
+  | n == 1 = False
+  | n == 2 = True
   | even n = False
   | otherwise = Nothing == (find (==0) $ map (mod n) [(n-2),(n-4)..3])
 

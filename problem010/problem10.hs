@@ -1,5 +1,5 @@
 import Data.List
-import Data.Maybe
+import Data.Array.Unboxed
 import Text.Printf
 import Control.Exception
 import System.CPUTime
@@ -19,19 +19,23 @@ time a = do
 The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
 
 Find the sum of all the primes below two million.
+
+TODO: Optimize
 -}
 --
-prime :: Int -> Bool
-prime n 
-  | even n = False
-  | otherwise = Nothing == (find (==0) $ map (mod n) [(n-2),(n-4)..3])
+isprime :: (Integral i) => i -> Bool
+isprime n = isprime_ n primes
+  where isprime_ n (p:ps)
+          | p*p > n        = True
+          | n `mod` p == 0 = False
+          | otherwise      = isprime_ n ps
 
-sum' :: [Integer] -> Int
-sum' = foldl (+) 0
+primes :: (Integral i) => [i]
+primes = 2 : filter isprime [3,5..]
+
+
 -- 
--- TODO Time solution and add produt of resulting tuple below
--- find (isTriplet) [(x,y,z) | x <- [1..1000], y <- [x..1000], z <- [y..1000], x+y+z==1000]
-solution = putStrLn $ show $ sum' [x.. | x <- prime x]
+solution = putStrLn $ show $ foldl (+) 0 $ takeWhile (<2000000) primes
 
 main = do
   putStrLn "Starting..."

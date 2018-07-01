@@ -7,7 +7,9 @@ main :: IO ()
 
 -- Super lazy isPrime
 isPrime :: Int -> Bool
-isPrime x 
+isPrime x
+  | x == 1 = False
+  | x == 2 = True
   | even x = False
   | otherwise = (<3) $ length $ filter (== 0) $ map (mod x) [1..x]
 
